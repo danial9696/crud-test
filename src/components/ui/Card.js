@@ -1,4 +1,6 @@
-const Card = ({ children, name, email, text }) => {
+import "../../sass/components/Card.scss";
+
+const Card = ({ children, name, email, body: text }) => {
   return (
     <div className="c-card">
       <div className="card">
