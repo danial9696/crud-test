@@ -15,6 +15,12 @@
     @include flex-center-vertical;
     justify-content: space-evenly;
     width: 100%;
+
+    @include for-size("tablet-down") {
+      display: flex;
+      flex-direction: column;
+      width: auto;
+    }
   }
 
   .header__link {

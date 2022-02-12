@@ -8,7 +8,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 const List = () => {
   const { list, isFethcing } = useContext(ListContext);
 
-  const editAndDeleteHandler = (method = "edit", id) => {};
+  const editHandler = (method = "edit", id) => {};
 
   const deleteHandler = async (id) => {
     try {
