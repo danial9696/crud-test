@@ -1,15 +1,20 @@
 import { useState } from "react";
-// import Button from "./ui/Button";
+import { useParams, useHistory } from "react-router-dom";
 import { Button } from "@material-ui/core";
 import TextField from "@mui/material/TextField";
 import TextareaAutosize from "@mui/material/TextField";
+const URL = "https://jsonplaceholder.typicode.com/comments";
 
-const AddItem = () => {
+const ItemsForm = () => {
   const [state, setState] = useState({
     name: "",
     email: "",
     comment: "",
   });
+
+  const { id } = useParams();
+  const { location, push } = useHistory();
+  const isEditPage = location.pathname.includes("/edit/");
 
   const handleChange = (event) => {
     const { value, name } = event.target;
@@ -20,27 +25,37 @@ const AddItem = () => {
     });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
+  const editOrCreate = async (method = "POST", url = URL, id = null) => {
     try {
-      const data = await fetch(
-        "https://jsonplaceholder.typicode.com/comments",
-        {
-          method: "POST",
-          body: JSON.stringify({
-            ...state,
-          }),
-          headers: {
-            "Content-type": "application/json; charset=UTF-8",
-          },
-        }
-      );
+      const data = await fetch(url, {
+        method,
+        body: JSON.stringify({
+          ...state,
+          id,
+        }),
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      });
       const res = await data.json();
       console.log(res);
     } catch (error) {
-      throw new Error("Error creating new comment", error);
+      throw new Error(error);
     }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (isEditPage) {
+      const url = `${URL}/${id}`;
+      console.log(url);
+      editOrCreate("PUT", url, id);
+    } else {
+      editOrCreate();
+    }
+
+    push("/");
   };
 
   return (
@@ -85,11 +100,11 @@ const AddItem = () => {
         </div>
 
         <Button onClick={handleSubmit} variant="contained" color="primary">
-          submit
+          {isEditPage ? "Edit" : "Add"}
         </Button>
       </form>
     </div>
   );
 };
 
-export default AddItem;
+export default ItemsForm;

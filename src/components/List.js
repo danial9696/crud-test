@@ -1,14 +1,20 @@
-import Card from "./ui/Card";
-import ListContext from "../context/store";
 import { Button } from "@material-ui/core";
 import { useContext } from "react";
+import { useHistory, useLocation } from "react-router-dom";
+import Card from "./ui/Card";
+import ListContext from "../context/store";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 
 const List = () => {
   const { list, isFethcing } = useContext(ListContext);
 
-  const editHandler = (method = "edit", id) => {};
+  const history = useHistory();
+  const location = useLocation();
+
+  const openEditPage = (id) => {
+    history.push(`${location.pathname}edit/${id}`);
+  };
 
   const deleteHandler = async (id) => {
     try {
@@ -23,7 +29,11 @@ const List = () => {
   const listOFCards = list.map((item) => {
     return (
       <Card key={item.id} {...item}>
-        <Button variant="contained" color="secondary">
+        <Button
+          onClick={() => openEditPage(item.id)}
+          variant="contained"
+          color="secondary"
+        >
           Edit
         </Button>
 
