@@ -1,6 +1,7 @@
 import React from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Switch, Route, Navigate } from "react-router-dom";
 import Header from "../components/Header";
+import List from "../components/List";
 
 const AppRouter = () => {
   return (
@@ -8,9 +9,10 @@ const AppRouter = () => {
       <div>
         <Header />
         <div className="main-content">
-          <Routes>
-            <Route component={() => <Navigate to="/" />} />
-          </Routes>
+          <Switch>
+            <Route component={List} path="/" exact />
+            {/* <Route component={() => <Navigate to="/" />} /> */}
+          </Switch>
         </div>
       </div>
     </BrowserRouter>
